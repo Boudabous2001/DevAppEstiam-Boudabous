@@ -4,4 +4,12 @@
     <string name="choose_language">Langue</string>
     <string name="lang_en">Anglais</string>
     <string name="lang_fr">Français</string>
+    <string name="main_title">ESTIAM</string>
+    <string name="main_tab">Accueil</string>
+    <string name="products_title">Produits</string>
+    <string name="products_tab">Produits</string>
+    <string name="users_title">Utilisateurs</string>
+    <string name="users_tab">Utilisateurs</string>
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_action_description">Ouvrir les paramètres</string>
 </resources>
