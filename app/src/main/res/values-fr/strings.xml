@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Estiam App</string>
+    <string name="hello_name">Bonjour %1$s!</string>
+    <string name="choose_language">Langue</string>
+    <string name="lang_en">Anglais</string>
+    <string name="lang_fr">Français</string>
+</resources>
