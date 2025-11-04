@@ -10,6 +10,8 @@
     <string name="products_tab">Products</string>
     <string name="users_title">Users</string>
     <string name="users_tab">Users</string>
+    <string name="users_db_title">DB Users</string>
+    <string name="users_db_tab">DB Users</string>
     <string name="settings_title">Settings</string>
     <string name="settings_action_description">Open settings</string>
 </resources>

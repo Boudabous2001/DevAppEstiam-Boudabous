@@ -62,17 +62,8 @@ fun MainScreen() {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = AppDestination.fromRoute(backStackEntry?.destination?.route)
     val bottomDestinations = remember {
-        listOf(AppDestination.Home, AppDestination.Products, AppDestination.Users)
+        listOf(AppDestination.Home, AppDestination.Products, AppDestination.Users, AppDestination.DbUsers)
     }
-
-    fun currentAppDestination(): AppDestination =
-        when (currentDestination?.route) {
-            AppDestination.Home.route -> AppDestination.Home
-            AppDestination.Products.route -> AppDestination.Products
-            AppDestination.Users.route -> AppDestination.Users
-            AppDestination.Settings.route -> AppDestination.Settings
-            else -> AppDestination.Home
-        }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -142,6 +133,9 @@ fun MainScreen() {
             }
             composable(AppDestination.Users.route) {
                 UsersScreen()
+            }
+            composable(AppDestination.DbUsers.route) {
+                UsersDbScreen()
             }
             composable(AppDestination.Settings.route) {
                 SettingsScreen()
@@ -268,6 +262,13 @@ private sealed class AppDestination(
         icon = Icons.Filled.Group
     )
 
+    data object DbUsers : AppDestination(
+        route = "dbUsers",
+        titleRes = R.string.users_db_title,
+        labelRes = R.string.users_db_tab,
+        icon = Icons.Filled.Group
+    )
+
     data object Settings : AppDestination(
         route = "settings",
         titleRes = R.string.settings_title,
@@ -280,6 +281,7 @@ private sealed class AppDestination(
             Home.route -> Home
             Products.route -> Products
             Users.route -> Users
+            DbUsers.route -> DbUsers
             Settings.route -> Settings
             else -> Home
         }
