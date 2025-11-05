@@ -15,12 +15,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.estiamapp.notifications.NotificationHelper
 import com.example.estiamapp.ui.screens.MainScreen
 import com.example.estiamapp.ui.theme.EstiamAppTheme
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         NotificationHelper.createChannel(this)
+
+        FirebaseMessaging.getInstance().token
+            .addOnSuccessListener { token ->
+                Log.d("FCM", "Main Activity =======> FCM TOKEN: $token")
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FCM", "Token error: ", exception)
+            }
+
         enableEdgeToEdge()
         setContent {
             EstiamAppTheme {
