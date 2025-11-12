@@ -11,8 +11,8 @@ class App: Application() {
 
         NotificationHelper.createChannel(this)
 
-        FirebaseAuth.getInstance().signInAnonymously()
+        /*FirebaseAuth.getInstance().signInAnonymously()
             .addOnSuccessListener { Log.d("Auth", "Signed In successfully: uid=${it.user?.uid}") }
-            .addOnFailureListener { Log.e("Auth", "Sign-in failed", it) }
+            .addOnFailureListener { Log.e("Auth", "Sign-in failed", it) }*/
     }
 }

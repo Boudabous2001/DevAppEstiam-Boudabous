@@ -46,6 +46,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.estiamapp.Greeting
 import com.example.estiamapp.R
 import com.example.estiamapp.notifications.NotificationHelper
+import com.example.estiamapp.ui.auth.RequireAuth
 import com.example.estiamapp.ui.components.AppSnackbarButton
 import com.example.estiamapp.ui.components.AppToastButton
 import com.example.estiamapp.ui.components.AppTopBar
@@ -128,17 +129,48 @@ fun MainScreen() {
                     snackbarHostState = snackbarHostState
                 )
             }
+
             composable(AppDestination.Products.route) {
-                ProductsScreen()
+                RequireAuth(navController) {
+                    ProductsScreen()
+                }
             }
             composable(AppDestination.Users.route) {
-                UsersScreen()
+                RequireAuth(navController) {
+                    UsersScreen()
+                }
             }
             composable(AppDestination.DbUsers.route) {
-                UsersDbScreen()
+                RequireAuth(navController) {
+                    UsersDbScreen()
+                }
             }
             composable(AppDestination.Settings.route) {
-                SettingsScreen()
+                RequireAuth(navController) {
+                    SettingsScreen()
+                }
+            }
+
+            composable("login") {
+                LoginScreen(
+                    onNavigateRegister = { navController.navigate("register")},
+                    onLoggedIn = {
+                        navController.navigate("home") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            composable("register") {
+                RegisterScreen(
+                    onNavigateLogin = { navController.navigate("login")},
+                    onRegistered = {
+                        navController.navigate("home") {
+                            popUpTo("register") { inclusive = true }
+                        }
+                    }
+                )
             }
         }
     }
