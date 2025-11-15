@@ -1,71 +1,104 @@
 package com.example.estiamapp.ui.products
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.example.estiamapp.data.model.CategoryDto
 import com.example.estiamapp.data.model.ProductDto
 import com.example.estiamapp.ui.theme.EstiamAppTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductCard (product: ProductDto, modifier: Modifier = Modifier) {
-    Card(modifier = modifier.fillMaxHeight()) {
-        Row(Modifier.padding(12.dp)) {
-            Column(Modifier.weight(2f)) {
+fun ProductCard(
+    product: ProductDto,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column {
+            // Image
+            AsyncImage(
+                model = product.images.firstOrNull() ?: "",
+                contentDescription = product.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                // Titre
                 Text(
-                    product.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    product.description,
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = product.title,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Catégorie
                 Text(
-                    product.price.toString(),
-                    style = MaterialTheme.typography.titleLarge
+                    text = product.category.name,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Description
+                Text(
+                    text = product.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Prix
+                Text(
+                    text = "$${product.price}",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
     }
 }
 
-@Preview(showBackground = true, name = "ProductCard")
+@Preview
 @Composable
 private fun ProductCardPreview() {
     EstiamAppTheme {
         ProductCard(
             product = ProductDto(
                 id = 1,
-                title = "Immerse yourself in superior sound quality with these sleek red and silver over-ear headphones. Designed for comfort and style, the headphones feature cushioned ear cups, an adjustable padded headband, and a detachable red cable for easymmerse yourself in superior sound quality with these sleek red and silver over-ear headphones. Designed for comfort and style, the headphones feature cushioned ear cups, an adjustable padded headband, and a detachable red cable for easy",
-                slug = "Immerse-yourself-in-superior-sound-quality-with-these-sleek-red-and-silver-over-ear-headphones-designed-for-comfort-and-style-the-headphones-feature-cushioned-ear-cups-an-adjustable-padded-headband-and-a-detachable-red-cable-for-easymmerse-yourself-in-superior-sound-quality-with-these-sleek-red-and-silver-over-ear-headphones-designed-for-comfort-and-style-the-headphones-feature-cushioned-ear-cups-an-adjustable-padded-headband-and-a-detachable-red-cable-for-easy",
-                price = 12.0,
-                description = "Immerse yourself in superior sound quality with these sleek red and silver over-ear headphones. Designed for comfort and style, the headphones feature cushioned ear cups, an adjustable padded headband, and a detachable red cable for easy storage and portability. Perfect for music lovers and audiophiles who value both appearance and audio fidelity.",
+                title = "Amazing Product",
+                slug = "amazing-product",
+                price = 99.99,
+                description = "This is an amazing product with lots of features that you will love.",
                 category = CategoryDto(
-                    id = 2,
+                    id = 1,
                     name = "Electronics",
                     slug = "electronics",
-                    image = "https://i.imgur.com/ZANVnHE.jpeg",
-                    creationAt = "2025-11-03T17:19:40.000Z",
-                    updatedAt = "2025-11-03T17:19:40.000Z"
+                    image = "",
+                    creationAt = "",
+                    updatedAt = ""
                 ),
-                images = listOf("https://placehold.co/600x400/EEE/31343C"),
-                creationAt = "2025-11-03T17:19:40.000Z",
-                updatedAt = "2025-11-04T12:57:57.000Z"
+                images = listOf(),
+                creationAt = "",
+                updatedAt = ""
             )
         )
     }

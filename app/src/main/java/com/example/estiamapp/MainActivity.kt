@@ -1,87 +1,87 @@
 package com.example.estiamapp
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import com.example.estiamapp.notifications.NotificationHelper
-import com.example.estiamapp.ui.screens.MainScreen
+import com.example.estiamapp.ui.AppNavigation
 import com.example.estiamapp.ui.theme.EstiamAppTheme
 import com.google.firebase.messaging.FirebaseMessaging
 
-class MainActivity : AppCompatActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
+class MainActivity : ComponentActivity() {
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.i("MainActivity", "Notification permission granted")
+        } else {
+            Log.w("MainActivity", "Notification permission denied")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d("MainActivity", "Activity created")
+
+        // Créer le canal de notification
         NotificationHelper.createChannel(this)
 
-        FirebaseMessaging.getInstance().token
-            .addOnSuccessListener { token ->
-                Log.d("FCM", "Main Activity =======> FCM TOKEN: $token")
-            }
-            .addOnFailureListener { exception ->
-                Log.e("FCM", "Token error: ", exception)
-            }
+        // Demander la permission pour les notifications (Android 13+)
+        requestNotificationPermission()
 
-        enableEdgeToEdge()
+        // Obtenir le token FCM
+        getFCMToken()
+
         setContent {
             EstiamAppTheme {
-                MainScreen()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppNavigation()
+                }
             }
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.i("MainActivity", "This is onStart")
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    Log.d("MainActivity", "Notification permission already granted")
+                }
+                else -> {
+                    Log.d("MainActivity", "Requesting notification permission")
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.v("MainActivity", "This is onResume")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.v("MainActivity", "This is onRestart")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.v("MainActivity", "This is onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.v("MainActivity", "This is onStop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.v("MainActivity", "This is onDestroy")
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.hello_name, name),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EstiamAppTheme {
-        Greeting("Android")
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    Log.i("MainActivity", "FCM Token: $token")
+                } else {
+                    Log.e("MainActivity", "Failed to get FCM token", task.exception)
+                }
+            }
     }
 }

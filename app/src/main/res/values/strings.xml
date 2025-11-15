@@ -4,8 +4,10 @@
     <string name="choose_language">Language</string>
     <string name="lang_en">English</string>
     <string name="lang_fr">French</string>
+
+    <!-- Navigation -->
     <string name="main_title">ESTIAM</string>
-    <string name="main_tab">Main</string>
+    <string name="main_tab">Home</string>
     <string name="products_title">Products</string>
     <string name="products_tab">Products</string>
     <string name="users_title">Users</string>
@@ -13,5 +15,50 @@
     <string name="users_db_title">DB Users</string>
     <string name="users_db_tab">DB Users</string>
     <string name="settings_title">Settings</string>
+
+    <!-- Auth -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Sign Up</string>
+    <string name="logout">Logout</string>
+
+    <!-- Settings -->
     <string name="settings_action_description">Open settings</string>
+
+    <!-- Notifications -->
+    <string name="notification_title">Notification</string>
+    <string name="notification_message">This is a test notification</string>
+    <string name="notification_button">Show Notification</string>
+    <string name="toast_button">Show Toast</string>
+    <string name="snackbar_button">Show Snackbar</string>
+    <string name="snackbar_message">This is a Snackbar message!</string>
+    <string name="snackbar_action">OK</string>
+
+    <!-- Language -->
+    <string name="language_button">Language</string>
+
+    <!-- WorkManager -->
+    <string name="work_onetime">One-time task</string>
+    <string name="work_constraints">Task with constraints</string>
+    <string name="work_scheduled">Scheduled task</string>
+    <string name="work_executed">Task executed!</string>
+    <string name="work_button_onetime">One Time Action - 10 sec</string>
+    <string name="work_button_constraints">Action - Wifi &amp; Charging</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="empty">No items</string>
+    <string name="retry">Retry</string>
+    <string name="add">Add</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Users -->
+    <string name="add_user">Add user</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="sync_firestore">Sync with Firestore</string>
+    <string name="clear_local">Clear local database</string>
 </resources>

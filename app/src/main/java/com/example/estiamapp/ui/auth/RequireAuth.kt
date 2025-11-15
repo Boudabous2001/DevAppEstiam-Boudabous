@@ -1,27 +1,25 @@
 package com.example.estiamapp.ui.auth
 
-import androidx.compose.runtime.*
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun RequireAuth (
-    navController: NavController,
+fun RequireAuth(
+    authViewModel: AuthViewModel,
+    onNotAuthenticated: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val vmAuth: AuthViewModel = viewModel()
-    val isAuthed by vmAuth.isAuthenticated.collectAsState()
+    val uiState by authViewModel.uiState.collectAsStateWithLifecycle()
 
-    if (!isAuthed) {
-        LaunchedEffect(Unit) {
-            navController.navigate("login") {
-                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                launchSingleTop = true
-                restoreState = true
-            }
+    LaunchedEffect(uiState.isAuthenticated) {
+        if (!uiState.isAuthenticated) {
+            onNotAuthenticated()
         }
-    } else {
+    }
+
+    if (uiState.isAuthenticated) {
         content()
     }
 }

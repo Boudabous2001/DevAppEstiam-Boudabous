@@ -1,34 +1,31 @@
 package com.example.estiamapp.ui.components
 
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.estiamapp.ui.theme.EstiamAppTheme
+import androidx.compose.ui.res.stringResource
+import com.example.estiamapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
     title: String,
-    modifier: Modifier = Modifier,
-    navigationIcon: (@Composable () -> Unit)? = null,
-    actions: @Composable RowScope.() -> Unit = {}
+    onSettingsClick: () -> Unit
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         title = { Text(title) },
-        navigationIcon = { navigationIcon?.invoke() },
-        actions = actions,
-        modifier = modifier
+        actions = {
+            IconButton(onClick = onSettingsClick) {
+                Icon(
+                    Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.settings_action_description)
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun AppTopBarPreview() {
-    EstiamAppTheme {
-        AppTopBar(title = "ESTIAM")
-    }
 }

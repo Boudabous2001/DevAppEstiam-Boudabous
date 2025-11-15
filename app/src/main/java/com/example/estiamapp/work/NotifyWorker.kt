@@ -2,22 +2,40 @@ package com.example.estiamapp.work
 
 import android.content.Context
 import android.util.Log
-import androidx.work.*
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
 import com.example.estiamapp.notifications.NotificationHelper
 
 class NotifyWorker(
-    appContext: Context,
+    context: Context,
     params: WorkerParameters
-): Worker (appContext, params) {
-    override fun doWork(): Result {
-        val title = inputData.getString("title") ?: "Worker Notification"
-        val message = inputData.getString("message") ?: "Task executed"
+) : CoroutineWorker(context, params) {
 
-        Log.d("NotifyWorker", "doWork is launched")
-        val posted = NotificationHelper.show(applicationContext, title, message)
+    override suspend fun doWork(): Result {
+        return try {
+            Log.d("NotifyWorker", "Worker started")
 
-        Log.d("NotifyWorker", "Notification sent: $posted")
+            val title = inputData.getString("title") ?: "Tâche exécutée!"
+            val message = inputData.getString("message") ?: "WorkManager a terminé une tâche en arrière-plan"
 
-        return Result.success()
+            val success = NotificationHelper.show(
+                context = applicationContext,
+                title = title,
+                message = message,
+                notificationId = 2
+            )
+
+            if (success) {
+                Log.i("NotifyWorker", "Notification sent successfully")
+                Result.success()
+            } else {
+                Log.w("NotifyWorker", "Failed to send notification")
+                Result.failure()
+            }
+
+        } catch (e: Exception) {
+            Log.e("NotifyWorker", "Worker failed", e)
+            Result.failure()
+        }
     }
 }
